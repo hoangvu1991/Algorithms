@@ -28,6 +28,7 @@ public class Exercise_1_1_36 {
 
         double[] a = new double[m];
         int[][] stats = new int[m][m];
+        int[][] stats2 = new int[m][m];
 
         // Run test
         for (int i = 0; i < n; i++) {
@@ -42,6 +43,7 @@ public class Exercise_1_1_36 {
                 for (int k = 0; k < m; k++) {
                     if (a[j] == k) stats[j][k]++;
                 }
+                stats2[(int) a[j]][j]++;
             }
         }
 
@@ -55,6 +57,22 @@ public class Exercise_1_1_36 {
             StdOut.printf("%4d:", i);
             for (int j = 0; j < m; j++) {
                 StdOut.printf("%4d", stats[i][j]);
+            }
+            StdOut.println();
+        }
+
+        StdOut.println();
+
+        // Print results
+        StdOut.printf("%5s", "");
+        for (int i = 0; i < m; i++) {
+            StdOut.printf("%4d", i);
+        }
+        StdOut.println();
+        for (int i = 0; i < m; i++) {
+            StdOut.printf("%4d:", i);
+            for (int j = 0; j < m; j++) {
+                StdOut.printf("%4d", stats2[i][j]);
             }
             StdOut.println();
         }
