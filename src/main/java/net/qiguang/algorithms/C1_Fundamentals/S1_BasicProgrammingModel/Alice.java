@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Alice {
 
     public static void main(String[] args) {
-        final int attempts = 100; //hardcoded amount of times we will check to empirically calculate probabilities
+        final int attempts = 9000; //hardcoded amount of times we will check to empirically calculate probabilities
         Scanner sc = new Scanner(System.in); //read data using Scanner
         System.out.println("Enter how much people should be at the party: ");
         System.out.println("Number should be > 2");
@@ -18,13 +18,12 @@ public class Alice {
             guests[1] = true; //Bob already heard
             boolean alreadyHeard = false; //Condition to exit while loop
             int nextPerson = -1; //our random next person
+            int prevPerson = -1;
             int currentPerson = 1; //we start from Bob
             while (!alreadyHeard) {
                 nextPerson = 1 + (int) (Math.random() * (n - 1)); //randomize next person
-                if (nextPerson == currentPerson) { // check that it's not our current person
-                    while (nextPerson == currentPerson) //if it's true then we just randoming till we get other person
-                        nextPerson = 1 + (int) (Math.random() * (n - 1));
-                }
+                while (nextPerson == currentPerson || nextPerson == prevPerson) //if it's true then we just randoming till we get other person
+                    nextPerson = 1 + (int) (Math.random() * (n - 1));
                 if (guests[nextPerson]) //if guest already heard
                 {
                     if (rumorSpreaded(guests)) //if all people heard
@@ -33,6 +32,7 @@ public class Alice {
                     alreadyHeard = true; // our condition is true
                 }
                 guests[nextPerson] = true; //now nextperson heard rumor
+                prevPerson = currentPerson;
                 currentPerson = nextPerson; //current person now is nextperson
             }
         }

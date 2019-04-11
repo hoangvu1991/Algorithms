@@ -86,7 +86,7 @@ public class Exercise_1_3_34 {
     }
 
     public static void main(String[] args) {
-        RandomBag<Integer> b = new RandomBag<Integer>();
+        RandomBag<Integer> b = new RandomBag<>();
         for (int i = 0; i < 10; i++) {
             b.add(i);
         }
