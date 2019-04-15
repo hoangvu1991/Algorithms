@@ -53,5 +53,7 @@ public class Hexadecimal {
 
         String bina = decimal2Binary(106);
         StdOut.println(bina);
+
+        System.out.println(Integer.toBinaryString(106));
     }
 }
