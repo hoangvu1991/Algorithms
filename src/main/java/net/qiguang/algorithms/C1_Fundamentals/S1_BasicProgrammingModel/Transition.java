@@ -41,8 +41,8 @@ public class Transition {
 
     public static void main(String[] args) {
 
-        try (FileInputStream is = new FileInputStream(new File("src\\main\\java\\net\\qiguang\\algorithms\\C1_Fundamentals\\S1_BasicProgrammingModel\\tiny.txt"))) {
-            System.setIn(is);
+//        try (FileInputStream is = new FileInputStream(new File("src\\main\\java\\net\\qiguang\\algorithms\\C1_Fundamentals\\S1_BasicProgrammingModel\\tiny.txt"))) {
+//            System.setIn(is);
 
             int n = StdIn.readInt();           // number of pages
             int[][] counts = new int[n][n];    // counts[i][j] = # links from page i to page j
@@ -68,9 +68,9 @@ public class Transition {
                 }
                 StdOut.println();
             }
-        } catch (Exception e) {
-            StdOut.println(e);
-        }
+//        } catch (Exception e) {
+//            StdOut.println(e);
+//        }
 
     }
 }
