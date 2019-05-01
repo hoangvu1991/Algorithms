@@ -27,7 +27,7 @@ public class TheLongestCommonSubsequence {
         int i = 0, j = 0;
         int count = 0;
         while (i < m && j < n) {
-            if (a[i] == b[j] && a[i] != 0) {
+            if (a[i] == b[j]) {
                 lcs[count++] = a[i];
                 i++;
                 j++;
