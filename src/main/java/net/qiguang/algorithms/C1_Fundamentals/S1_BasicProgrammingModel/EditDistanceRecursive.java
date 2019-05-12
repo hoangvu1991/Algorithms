@@ -21,23 +21,20 @@ public class EditDistanceRecursive {
     }
 
     static int string_compare(String s, String t, int i, int j) {
-        int k; /* counter */
         int[] opt = new int[3]; /* cost of the three options */
-        int lowest_cost; /* lowest cost */
         if (i == 0) return (j * indel(' '));
         if (j == 0) return (i * indel(' '));
-        opt[MATCH] = string_compare(s, t, i - 1, j - 1) + match(s.charAt(i-1), t.charAt(j-1));
-        opt[INSERT] = string_compare(s, t, i, j - 1) + indel(t.charAt(j-1));
-        opt[DELETE] = string_compare(s, t, i - 1, j) + indel(s.charAt(i-1));
-        lowest_cost = opt[MATCH];
-        for (k = INSERT; k <= DELETE; k++)
-            if (opt[k] < lowest_cost) lowest_cost = opt[k];
-        return (lowest_cost);
+        opt[MATCH] = string_compare(s, t, i - 1, j - 1) + match(s.charAt(i - 1), t.charAt(j - 1));
+        opt[INSERT] = string_compare(s, t, i, j - 1) + indel(t.charAt(j - 1));
+        opt[DELETE] = string_compare(s, t, i - 1, j) + indel(s.charAt(i - 1));
+        return min(opt[MATCH], opt[INSERT], opt[DELETE]); /* lowest cost */
     }
+
     static int match(char c, char d) {
         if (c == d) return 0;
         else return 1;
     }
+
     static int indel(char c) {
         return 1;
     }
@@ -54,9 +51,11 @@ public class EditDistanceRecursive {
         int deletion = calculate(x.substring(1), y) + 1;
         return min(substitution, insertion, deletion);
     }
+
     private static int costOfSubstitution(char a, char b) {
         return a == b ? 0 : 1;
     }
+
     private static int min(int... numbers) {
         return Arrays.stream(numbers).min().orElse(Integer.MAX_VALUE);
     }
