@@ -9,6 +9,7 @@ public class EditDistanceRecursive {
     public static final String ACTION_SUBSTITUTE = "Sub ";
     public static final String ACTION_INSERT = "Ins ";
     public static final String ACTION_DELETE = "Del ";
+    public static Cell[][] m;
 
     public static void main(String args[]) {
         String s = "FOOD";
@@ -26,12 +27,14 @@ public class EditDistanceRecursive {
 
         int distance = string_compare(s2, t2);
         System.out.println(distance);
+        reconstruct_path(s2, t2, s2.length() - 1, t2.length() - 1);
+        System.out.println();
 
-//        int distance2 = calculate(s, t);
+//        int distance2 = calculate(s2, t2);
 //        System.out.println(distance2);
-//
-        int distance3 = calculateDynamic(s2, t2);
-        System.out.println(distance3);
+
+//        int distance3 = calculateDynamic(s2, t2);
+//        System.out.println(distance3);
     }
 
     static int string_compare(String s, String t, int i, int j) {
@@ -49,17 +52,17 @@ public class EditDistanceRecursive {
         int MAXLEN_T = t.length();
         int k; // counters
         int[] opt = new int[3]; // cost of the three options
-        Cell[][] m = new Cell[MAXLEN_S][MAXLEN_T];
+        m = new Cell[MAXLEN_S][MAXLEN_T];
         for (int i = 0; i < MAXLEN_S; i++) {
             for (int j = 0; j < MAXLEN_T; j++) {
                 m[i][j] = new Cell();
             }
         }
         for (int i = 0; i < MAXLEN_T; i++) {
-            row_init(i, m);
+            row_init(i);
         }
         for (int j = 0; j < MAXLEN_S; j++) {
-            column_init(j, m);
+            column_init(j);
         }
         for (int i = 1; i < MAXLEN_S; i++) {
             for (int j = 1; j < MAXLEN_T; j++) {
@@ -81,7 +84,42 @@ public class EditDistanceRecursive {
         return (m[MAXLEN_S - 1][MAXLEN_T - 1].cost);
     }
 
-    static void row_init(int i, Cell[][] m) {
+    static void reconstruct_path(String s, String t, int i, int j) {
+        if (m[i][j].parent == -1) return;
+        if (m[i][j].parent == MATCH) {
+            reconstruct_path(s, t, i - 1, j - 1);
+            match_out(s, t, i, j);
+            return;
+        }
+        if (m[i][j].parent == INSERT) {
+            reconstruct_path(s, t, i, j - 1);
+            insert_out(t, j);
+            return;
+        }
+        if (m[i][j].parent == DELETE) {
+            reconstruct_path(s, t, i - 1, j);
+            delete_out(s, i);
+            return;
+        }
+    }
+
+    static void match_out(String s, String t, int i, int j) {
+        if (s.charAt(i - 1) == t.charAt(j - 1)) {
+            System.out.print("M ");
+        } else {
+            System.out.print("S ");
+        }
+    }
+
+    static void insert_out(String t, int j) {
+        System.out.print("I ");
+    }
+
+    static void delete_out(String s, int i) {
+        System.out.print("D ");
+    }
+
+    static void row_init(int i) {
         m[0][i].cost = i;
         if (i > 0)
             m[0][i].parent = INSERT;
@@ -89,7 +127,7 @@ public class EditDistanceRecursive {
             m[0][i].parent = -1;
     }
 
-    static void column_init(int i, Cell[][] m) {
+    static void column_init(int i) {
         m[i][0].cost = i;
         if (i > 0)
             m[i][0].parent = DELETE;
