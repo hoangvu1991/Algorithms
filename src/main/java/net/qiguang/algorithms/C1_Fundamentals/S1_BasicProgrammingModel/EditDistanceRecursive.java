@@ -17,19 +17,23 @@ public class EditDistanceRecursive {
         String t1 = "B";
         String s2 = "thou shalt not";
         String t2 = "you should not";
-        Result resultDistance = string_compare(s, t, s.length(), t.length());
-        System.out.println(resultDistance.cost);
-        System.out.println(resultDistance.action);
+//        Result resultDistance = string_compare(s, t, s.length(), t.length());
+//        System.out.println(resultDistance.cost);
+//        System.out.println(resultDistance.action);
+
+//        int distance = string_compare(s2, t2, s2.length(), t2.length());
+//        System.out.println(distance);
 
 //        int distance2 = calculate(s, t);
 //        System.out.println(distance2);
-
-//        int distance3 = calculateDynamic(s2, t2);
-//        System.out.println(distance3);
+//
+        int distance3 = calculateDynamic(s2, t2);
+        System.out.println(distance3);
     }
 
+    /*
     static Result string_compare(String s, String t, int i, int j) {
-        int[] opt = new int[3]; /* cost of the three options */
+        int[] opt = new int[3]; // cost of the three options
         String action = "";
         Result result = new Result();
 
@@ -72,7 +76,17 @@ public class EditDistanceRecursive {
         result.setAction(action);
 
 
-        return result; /* lowest cost */
+        return result; // lowest cost
+    }
+    */
+    static int string_compare(String s, String t, int i, int j) {
+        int[] opt = new int[3]; // cost of the three options
+        if (i == 0) return (j * indel(' '));
+        if (j == 0) return (i * indel(' '));
+        opt[MATCH] = string_compare(s, t, i - 1, j - 1) + match(s.charAt(i - 1), t.charAt(j - 1));
+        opt[INSERT] = string_compare(s, t, i, j - 1) + indel(t.charAt(j - 1));
+        opt[DELETE] = string_compare(s, t, i - 1, j) + indel(s.charAt(i - 1));
+        return min(opt[MATCH], opt[INSERT], opt[DELETE]); // lowest cost
     }
 
     private static class Result {
