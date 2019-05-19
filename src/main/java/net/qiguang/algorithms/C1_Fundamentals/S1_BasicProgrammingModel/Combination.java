@@ -9,10 +9,15 @@ public class Combination {
     private static List<String[]> allResults = new ArrayList<>();
 
     public static void main(String[] args){
-        int m = 3;
+        int m = 2;
         String[] result = new String[m];
-        combinations2(m, 0, result);
-        allResults.stream().forEach(arr -> System.out.println(Arrays.toString(arr)));
+//        combinations2(m, 0, result);
+//        System.out.println(allResults.size());
+//        allResults.stream().forEach(arr -> System.out.println(Arrays.toString(arr)));
+
+        List<List<String>> combine = combine(m, new ArrayList<>(Arrays.asList(arr)));
+        System.out.println(combine.size());
+        combine.stream().forEach(c -> System.out.println(c));
     }
 
     static void combinations2(int choose, int startPosition, String[] result){
@@ -25,5 +30,23 @@ public class Combination {
             result[result.length - choose] = arr[i];
             combinations2(choose-1, i+1, result);
         }
+    }
+
+    static List<List<String>> combine(int k, List<String> strings) {
+        if (k == strings.size() || k == 0) {
+            ArrayList<String> es = new ArrayList<>(strings);
+            ArrayList<List<String>> lists = new ArrayList<>();
+            lists.add(es);
+            return lists;
+        }
+        String removedString = strings.remove(0);
+        List<String> strings2 = new ArrayList<>(strings);
+        List<List<String>> result1 = combine(k - 1, strings);
+        result1.stream().forEach(l -> l.add(removedString));
+
+        List<List<String>> result2 = combine(k, strings2);
+
+        boolean isAdd = result1.addAll(result2);
+        return result1;
     }
 }
