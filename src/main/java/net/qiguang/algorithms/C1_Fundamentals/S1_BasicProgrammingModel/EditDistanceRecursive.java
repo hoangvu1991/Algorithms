@@ -24,6 +24,9 @@ public class EditDistanceRecursive {
 //        int distance = string_compare(s2, t2, s2.length(), t2.length());
 //        System.out.println(distance);
 
+        int distance = string_compare(s2, t2);
+        System.out.println(distance);
+
 //        int distance2 = calculate(s, t);
 //        System.out.println(distance2);
 //
@@ -31,6 +34,89 @@ public class EditDistanceRecursive {
         System.out.println(distance3);
     }
 
+    static int string_compare(String s, String t, int i, int j) {
+        int[] opt = new int[3]; // cost of the three options
+        if (i == 0) return (j * indel(' '));
+        if (j == 0) return (i * indel(' '));
+        opt[MATCH] = string_compare(s, t, i - 1, j - 1) + match(s.charAt(i - 1), t.charAt(j - 1));
+        opt[INSERT] = string_compare(s, t, i, j - 1) + indel(t.charAt(j - 1));
+        opt[DELETE] = string_compare(s, t, i - 1, j) + indel(s.charAt(i - 1));
+        return min(opt[MATCH], opt[INSERT], opt[DELETE]); // lowest cost
+    }
+
+    static int string_compare(String s, String t) {
+        int MAXLEN_S = s.length();
+        int MAXLEN_T = t.length();
+        int k; // counters
+        int[] opt = new int[3]; // cost of the three options
+        Cell[][] m = new Cell[MAXLEN_S][MAXLEN_T];
+        for (int i = 0; i < MAXLEN_S; i++) {
+            for (int j = 0; j < MAXLEN_T; j++) {
+                m[i][j] = new Cell();
+            }
+        }
+        for (int i = 0; i < MAXLEN_T; i++) {
+            row_init(i, m);
+        }
+        for (int j = 0; j < MAXLEN_S; j++) {
+            column_init(j, m);
+        }
+        for (int i = 1; i < MAXLEN_S; i++) {
+            for (int j = 1; j < MAXLEN_T; j++) {
+                opt[MATCH] = m[i - 1][j - 1].cost + match(s.charAt(i - 1), t.charAt(j - 1));
+                opt[INSERT] = m[i][j - 1].cost + indel(t.charAt(j - 1));
+                opt[DELETE] = m[i - 1][j].cost + indel(s.charAt(i - 1));
+                m[i][j].cost = opt[MATCH];
+                m[i][j].parent = MATCH;
+
+                for (k = INSERT; k <= DELETE; k++) {
+                    if (opt[k] < m[i][j].cost) {
+                        m[i][j].cost = opt[k];
+                        m[i][j].parent = k;
+                    }
+                }
+            }
+        }
+        //goal_cell(s, t, & i,&j);
+        return (m[MAXLEN_S - 1][MAXLEN_T - 1].cost);
+    }
+
+    static void row_init(int i, Cell[][] m) {
+        m[0][i].cost = i;
+        if (i > 0)
+            m[0][i].parent = INSERT;
+        else
+            m[0][i].parent = -1;
+    }
+
+    static void column_init(int i, Cell[][] m) {
+        m[i][0].cost = i;
+        if (i > 0)
+            m[i][0].parent = DELETE;
+        else
+            m[i][0].parent = -1;
+    }
+
+    private static class Cell {
+        int cost; // cost of reaching this cell
+        int parent; // parent cell
+
+        public int getCost() {
+            return cost;
+        }
+
+        public void setCost(int cost) {
+            this.cost = cost;
+        }
+
+        public int getParent() {
+            return parent;
+        }
+
+        public void setParent(int parent) {
+            this.parent = parent;
+        }
+    }
     /*
     static Result string_compare(String s, String t, int i, int j) {
         int[] opt = new int[3]; // cost of the three options
@@ -79,15 +165,6 @@ public class EditDistanceRecursive {
         return result; // lowest cost
     }
     */
-    static int string_compare(String s, String t, int i, int j) {
-        int[] opt = new int[3]; // cost of the three options
-        if (i == 0) return (j * indel(' '));
-        if (j == 0) return (i * indel(' '));
-        opt[MATCH] = string_compare(s, t, i - 1, j - 1) + match(s.charAt(i - 1), t.charAt(j - 1));
-        opt[INSERT] = string_compare(s, t, i, j - 1) + indel(t.charAt(j - 1));
-        opt[DELETE] = string_compare(s, t, i - 1, j) + indel(s.charAt(i - 1));
-        return min(opt[MATCH], opt[INSERT], opt[DELETE]); // lowest cost
-    }
 
     private static class Result {
         public int getCost() {
