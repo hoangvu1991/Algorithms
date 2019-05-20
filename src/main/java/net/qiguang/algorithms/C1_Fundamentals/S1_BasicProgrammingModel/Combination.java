@@ -33,20 +33,25 @@ public class Combination {
     }
 
     static List<List<String>> combine(int k, List<String> strings) {
-        if (k == strings.size() || k == 0) {
+        if (k == strings.size()) {
             ArrayList<String> es = new ArrayList<>(strings);
             ArrayList<List<String>> lists = new ArrayList<>();
             lists.add(es);
             return lists;
         }
+        if (k == 0) {
+            ArrayList<List<String>> lists = new ArrayList<>();
+            lists.add(new ArrayList<>());
+            return lists;
+        }
         String removedString = strings.remove(0);
         List<String> strings2 = new ArrayList<>(strings);
         List<List<String>> result1 = combine(k - 1, strings);
-        result1.stream().forEach(l -> l.add(removedString));
+        result1.forEach(l -> l.add(removedString));
 
         List<List<String>> result2 = combine(k, strings2);
 
-        boolean isAdd = result1.addAll(result2);
+        result1.addAll(result2);
         return result1;
     }
 }
