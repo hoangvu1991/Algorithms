@@ -43,18 +43,18 @@ public class Knapsack {
     // Cache values in a HashMap - the cache may be sparse
     public static int knapsackTopDown(Order[] items, int k) {
         // Map: i -> k -> value
-        Map<Integer, Map<Integer, Integer>> cache = new HashMap<>();
+        List<Map<Integer, Integer>> cache = new ArrayList<>();
         return knapsackTopDown(items, k, 0, cache);
     }
 
     // Overloaded recursive function
-    private static int knapsackTopDown(Order[] items, int k, int i, Map<Integer, Map<Integer, Integer>> cache) {
+    private static int knapsackTopDown(Order[] items, int k, int i, List<Map<Integer, Integer>> cache) {
         if (i == items.length) {
             return 0;
         }
         // Check if the value is in the cache
-        if (!cache.containsKey(i)) {
-            cache.put(i, new HashMap<>());
+        if (!cache.contains(i)) {
+            cache.add(i, new HashMap<>());
         }
         Integer cached = cache.get(i).get(k);
         if (cached != null) {
