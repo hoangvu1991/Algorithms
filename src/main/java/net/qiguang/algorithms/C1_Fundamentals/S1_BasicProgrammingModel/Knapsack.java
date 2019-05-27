@@ -20,6 +20,8 @@ public class Knapsack {
         System.out.println(maxVal);
         int maxVal2 = knapsackTopDown(inputOrders, k);
         System.out.println(maxVal2);
+        int maxVal3 = knapsackBottomUp(inputOrders, k);
+        System.out.println(maxVal3);
     }
 
     private static int knapsack(Order[] orders, int k) {
@@ -70,6 +72,24 @@ public class Knapsack {
         }
         cache.get(i).put(k, toReturn);
         return toReturn;
+    }
+
+    // Iterative bottom up solution.
+    public static int knapsackBottomUp(Order[] orders, int k) {
+        // Initialize cache
+        int[][] cache = new int[orders.length + 1][k + 1];
+        // For each order and numItem, compute the max value of the orders up to that order that doesn't go over k numberItem
+        for (int i = 1; i <= orders.length; i++) {
+            for (int j = 0; j <= k; j++) {
+                if (orders[i - 1].getNumItem() > j) {
+                    cache[i][j] = cache[i - 1][j];
+                } else {
+                    cache[i][j] = Math.max(cache[i - 1][j],
+                            cache[i - 1][j - orders[i - 1].getNumItem()] + orders[i - 1].getVal());
+                }
+            }
+        }
+        return cache[orders.length][k];
     }
 
     private static class Order {
