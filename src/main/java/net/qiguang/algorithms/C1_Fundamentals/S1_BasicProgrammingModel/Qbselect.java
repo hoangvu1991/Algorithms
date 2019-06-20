@@ -6,8 +6,6 @@ public class Qbselect {
     static int MIN = -200000000;
     static int n;
     static int[][] a = new int[5][MAX];
-    static int[][] f = new int[16][MAX];
-    static int[][] fr = new int[9][9];
 
     static int getbit(int row, int i) {
         return (i >> (row - 1)) & 1;
@@ -28,11 +26,11 @@ public class Qbselect {
         return 1;
     }
 
-    static int value(int i, int col) {
+    static int value(int x, int col) {
         int[] bit = new int[5];
         int sum = 0;
         for (int row = 1; row <= 4; row++) {
-            bit[row] = getbit(row, i);
+            bit[row] = getbit(row, x);
         }
         for (int v = 1; v <= 4; v++) {
             if (bit[v] == 1) sum += a[v - 1][col - 1];
@@ -41,6 +39,8 @@ public class Qbselect {
     }
 
     static int bitmask() {
+        int[][] f = new int[16][MAX];
+        int[][] fr = new int[9][9];
         int[] d = {0, 1, 2, 4, 5, 8, 9, 10};
         int res = MIN;
         for (int i = 1; i <= 8; i++) {
