@@ -9,33 +9,33 @@ public class Qbselect {
     static int[][] f = new int[16][MAX];
     static int[][] fr = new int[9][9];
 
-    static int getbit(int k, int x) {
-        return (x >> (k - 1)) & 1;
+    static int getbit(int row, int i) {
+        return (i >> (row - 1)) & 1;
     }
 
-    static int ok(int x, int y) {
+    static int ok(int i, int j) {
         int[] bit = new int[5];
         int[] elsebit = new int[5];
-        for (int v = 1; v <= 4; v++) {
-            bit[v] = getbit(v, x);
+        for (int row = 1; row <= 4; row++) {
+            bit[row] = getbit(row, i);
         }
-        for (int v = 1; v <= 4; v++) {
-            elsebit[v] = getbit(v, y);
+        for (int row = 1; row <= 4; row++) {
+            elsebit[row] = getbit(row, j);
         }
-        for (int v = 1; v <= 4; v++) {
-            if ((bit[v] & elsebit[v]) == 1) return 0;
+        for (int row = 1; row <= 4; row++) {
+            if ((bit[row] & elsebit[row]) == 1) return 0;
         }
         return 1;
     }
 
-    static int value(int x, int y) {
+    static int value(int i, int col) {
         int[] bit = new int[5];
         int sum = 0;
-        for (int v = 1; v <= 4; v++) {
-            bit[v] = getbit(v, x);
+        for (int row = 1; row <= 4; row++) {
+            bit[row] = getbit(row, i);
         }
         for (int v = 1; v <= 4; v++) {
-            if (bit[v] == 1) sum += a[v - 1][y - 1];
+            if (bit[v] == 1) sum += a[v - 1][col - 1];
         }
         return sum;
     }
@@ -48,15 +48,15 @@ public class Qbselect {
                 fr[i][j] = ok(d[i - 1], d[j - 1]);
             }
         }
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= 8; j++) {
+        for (int col = 1; col <= n; col++) {
+            for (int i = 1; i <= 8; i++) {
                 int t = MIN;
-                for (int k = 1; k <= 8; k++) {
-                    if (fr[j][k] == 1 && f[k][i - 1] > t) {
-                        t = f[k][i - 1];
+                for (int j = 1; j <= 8; j++) {
+                    if (fr[i][j] == 1 && f[j][col - 1] > t) {
+                        t = f[j][col - 1];
                     }
                 }
-                f[j][i] = t + value(d[j - 1], i);
+                f[i][col] = t + value(d[i - 1], col);
             }
         }
         for (int i = 1; i <= 8; i++) {
