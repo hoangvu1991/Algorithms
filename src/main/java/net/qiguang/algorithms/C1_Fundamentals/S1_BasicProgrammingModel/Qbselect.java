@@ -7,17 +7,17 @@ public class Qbselect {
     static int n;
     static int[][] a = new int[5][MAX];
 
-    // get bit (of number i) at (row - 1)   |  row : 1 -> 4
-    static int getbit(int row, int i) {
-        return (i >> (row - 1)) & 1;
+    // get bit (of number status) at (row - 1)   |  row : 1 -> 4
+    static int getbit(int row, int status) {
+        return (status >> (row - 1)) & 1;
     }
 
-    static int ok(int i, int j) {
+    static int ok(int status1, int status2) {
         int[] bit = new int[5];
         int[] elsebit = new int[5];
         for (int row = 1; row <= 4; row++) {
-            bit[row] = getbit(row, i);
-            elsebit[row] = getbit(row, j);
+            bit[row] = getbit(row, status1);
+            elsebit[row] = getbit(row, status2);
             if ((bit[row] & elsebit[row]) == 1) {
                 return 0;
             }
@@ -25,11 +25,11 @@ public class Qbselect {
         return 1;
     }
 
-    static int value(int x, int col) {
+    static int value(int status, int col) {
         int[] bit = new int[5];
         int sum = 0;
         for (int row = 1; row <= 4; row++) {
-            bit[row] = getbit(row, x);
+            bit[row] = getbit(row, status);
             if (bit[row] == 1) {
                 sum += a[row - 1][col - 1];
             }
@@ -40,11 +40,11 @@ public class Qbselect {
     static int bitmask() {
         int[][] f = new int[16][MAX];
         int[][] fr = new int[9][9];
-        int[] d = {0, 1, 2, 4, 5, 8, 9, 10};
+        int[] statuses = {0, 1, 2, 4, 5, 8, 9, 10};
         int res = MIN;
         for (int i = 1; i <= 8; i++) {
             for (int j = 1; j <= 8; j++) {
-                fr[i][j] = ok(d[i - 1], d[j - 1]);
+                fr[i][j] = ok(statuses[i - 1], statuses[j - 1]);
             }
         }
         for (int col = 1; col <= n; col++) {
@@ -55,7 +55,7 @@ public class Qbselect {
                         t = f[j][col - 1];
                     }
                 }
-                f[i][col] = t + value(d[i - 1], col);
+                f[i][col] = t + value(statuses[i - 1], col);
             }
         }
         for (int i = 1; i <= 8; i++) {
