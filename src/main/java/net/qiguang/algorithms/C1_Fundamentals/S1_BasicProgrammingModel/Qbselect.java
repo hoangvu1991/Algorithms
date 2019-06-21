@@ -38,7 +38,7 @@ public class Qbselect {
     }
 
     static int bitmask() {
-        int[][] f = new int[16][n + 1];
+        int[][] f = new int[9][n + 1];
         int[][] fr = new int[9][9];
         int[] statuses = {0, 1, 2, 4, 5, 8, 9, 10};
         int res = MIN;
