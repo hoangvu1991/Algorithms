@@ -14,8 +14,8 @@ public class Qbselect {
     }
 
     static boolean ok(int status1, int status2) {
-        boolean[] bit = new boolean[5];
-        boolean[] elsebit = new boolean[5];
+        boolean[] bit = new boolean[4];
+        boolean[] elsebit = new boolean[4];
         for (int row = 0; row < 4; row++) {
             bit[row] = getbit(status1, row);
             elsebit[row] = getbit(status2, row);
@@ -39,28 +39,28 @@ public class Qbselect {
     }
 
     static int bitmask() {
-        int[][] fv = new int[8][n + 1];
-        boolean[][] fr = new boolean[8][8];
+        int[][] fvalues = new int[8][n + 1];
+        boolean[][] checkStatuses = new boolean[8][8];
         int[] statuses = {0, 1, 2, 4, 5, 8, 9, 10};
         int res = MIN;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                fr[i][j] = ok(statuses[i], statuses[j]); // fr : 0 -> 8
+                checkStatuses[i][j] = ok(statuses[i], statuses[j]); // fr : 0 -> 8
             }
         }
         for (int col = 0; col < n; col++) {
             for (int i = 0; i < 8; i++) {
                 int t = MIN;
                 for (int j = 0; j < 8; j++) {
-                    if (fr[i][j] && fv[j][col] > t) {
-                        t = fv[j][col];
+                    if (checkStatuses[i][j] && fvalues[j][col] > t) {
+                        t = fvalues[j][col];
                     }
                 }
-                fv[i][col + 1] = t + value(statuses[i], col);
+                fvalues[i][col + 1] = t + value(statuses[i], col);
             }
         }
         for (int i = 0; i < 8; i++) {
-            res = Math.max(res, fv[i][n]);
+            res = Math.max(res, fvalues[i][n]);
         }
         return res;
     }
