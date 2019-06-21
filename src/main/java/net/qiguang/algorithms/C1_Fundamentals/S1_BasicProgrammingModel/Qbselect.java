@@ -7,6 +7,7 @@ public class Qbselect {
     static int n;
     static int[][] a = new int[5][MAX];
 
+    // get bit (of number i) at (row - 1)   |  row : 1 -> 4
     static int getbit(int row, int i) {
         return (i >> (row - 1)) & 1;
     }
@@ -16,12 +17,10 @@ public class Qbselect {
         int[] elsebit = new int[5];
         for (int row = 1; row <= 4; row++) {
             bit[row] = getbit(row, i);
-        }
-        for (int row = 1; row <= 4; row++) {
             elsebit[row] = getbit(row, j);
-        }
-        for (int row = 1; row <= 4; row++) {
-            if ((bit[row] & elsebit[row]) == 1) return 0;
+            if ((bit[row] & elsebit[row]) == 1) {
+                return 0;
+            }
         }
         return 1;
     }
