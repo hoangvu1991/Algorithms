@@ -30,9 +30,9 @@ public class Qbselect {
         int sum = 0;
         for (int row = 1; row <= 4; row++) {
             bit[row] = getbit(row, x);
-        }
-        for (int v = 1; v <= 4; v++) {
-            if (bit[v] == 1) sum += a[v - 1][col - 1];
+            if (bit[row] == 1) {
+                sum += a[row - 1][col - 1];
+            }
         }
         return sum;
     }
