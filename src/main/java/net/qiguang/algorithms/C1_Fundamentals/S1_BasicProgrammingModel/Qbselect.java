@@ -8,29 +8,30 @@ public class Qbselect {
     static int[][] arr = new int[5][MAX];
 
     // get bit (of number status) at row   |  row : 0 -> 3
-    static int getbit(int row, int status) {
-        return (status >> row) & 1;
+    static boolean getbit(int status, int row) {
+        //return (status >> row) & 1;
+        return (status & (1 << row)) != 0;
     }
 
-    static int ok(int status1, int status2) {
-        int[] bit = new int[5];
-        int[] elsebit = new int[5];
+    static boolean ok(int status1, int status2) {
+        boolean[] bit = new boolean[5];
+        boolean[] elsebit = new boolean[5];
         for (int row = 0; row < 4; row++) {
-            bit[row] = getbit(row, status1);
-            elsebit[row] = getbit(row, status2);
-            if ((bit[row] & elsebit[row]) == 1) {
-                return 0;
+            bit[row] = getbit(status1, row);
+            elsebit[row] = getbit(status2, row);
+            if (bit[row] && elsebit[row]) {
+                return false;
             }
         }
-        return 1;
+        return true;
     }
 
     static int value(int status, int col) { // col : 0 -> 2
-        int[] bit = new int[5];
+        boolean[] bit = new boolean[4];
         int sum = 0;
         for (int row = 0; row < 4; row++) {
-            bit[row] = getbit(row, status);
-            if (bit[row] == 1) {
+            bit[row] = getbit(status, row);
+            if (bit[row]) {
                 sum += arr[row][col];
             }
         }
@@ -39,7 +40,7 @@ public class Qbselect {
 
     static int bitmask() {
         int[][] fv = new int[8][n + 1];
-        int[][] fr = new int[8][8];
+        boolean[][] fr = new boolean[8][8];
         int[] statuses = {0, 1, 2, 4, 5, 8, 9, 10};
         int res = MIN;
         for (int i = 0; i < 8; i++) {
@@ -51,7 +52,7 @@ public class Qbselect {
             for (int i = 0; i < 8; i++) {
                 int t = MIN;
                 for (int j = 0; j < 8; j++) {
-                    if (fr[i][j] == 1 && fv[j][col] > t) {
+                    if (fr[i][j] && fv[j][col] > t) {
                         t = fv[j][col];
                     }
                 }
