@@ -7,9 +7,9 @@ public class Qbselect {
     static int n;
     static int[][] arr = new int[5][MAX];
 
-    // get bit (of number status) at (row - 1)   |  row : 1 -> 4
+    // get bit (of number status) at row   |  row : 0 -> 3
     static int getbit(int row, int status) {
-        return (status >> (row)) & 1;
+        return (status >> row) & 1;
     }
 
     static int ok(int status1, int status2) {
@@ -25,13 +25,13 @@ public class Qbselect {
         return 1;
     }
 
-    static int value(int status, int col) {
+    static int value(int status, int col) { // col : 0 -> 2
         int[] bit = new int[5];
         int sum = 0;
         for (int row = 0; row < 4; row++) {
             bit[row] = getbit(row, status);
             if (bit[row] == 1) {
-                sum += arr[row][col - 1];
+                sum += arr[row][col];
             }
         }
         return sum;
@@ -47,15 +47,15 @@ public class Qbselect {
                 fr[i][j] = ok(statuses[i], statuses[j]); // fr : 0 -> 8
             }
         }
-        for (int col = 1; col <= n; col++) {
+        for (int col = 0; col < n; col++) {
             for (int i = 0; i < 8; i++) {
                 int t = MIN;
                 for (int j = 0; j < 8; j++) {
-                    if (fr[i][j] == 1 && fv[j][col - 1] > t) {
-                        t = fv[j][col - 1];
+                    if (fr[i][j] == 1 && fv[j][col] > t) {
+                        t = fv[j][col];
                     }
                 }
-                fv[i][col] = t + value(statuses[i], col);
+                fv[i][col + 1] = t + value(statuses[i], col);
             }
         }
         for (int i = 0; i < 8; i++) {
