@@ -39,7 +39,7 @@ public class Qbselect {
     }
 
     static int bitmask() {
-        int[][] fvalues = new int[8][n + 1];
+        int[][] fvalues = new int[8][n];
         boolean[][] checkStatuses = new boolean[8][8];
         int[] statuses = {0, 1, 2, 4, 5, 8, 9, 10};
         int res = MIN;
@@ -50,17 +50,17 @@ public class Qbselect {
         }
         for (int col = 0; col < n; col++) {
             for (int i = 0; i < 8; i++) {
-                int t = MIN;
+                int memory = 0;
                 for (int j = 0; j < 8; j++) {
-                    if (checkStatuses[i][j] && fvalues[j][col] > t) {
-                        t = fvalues[j][col];
+                    if (col > 0 & checkStatuses[i][j] && fvalues[j][col - 1] > memory) {
+                        memory = fvalues[j][col - 1];
                     }
                 }
-                fvalues[i][col + 1] = t + value(statuses[i], col);
+                fvalues[i][col] = memory + value(statuses[i], col);
             }
         }
         for (int i = 0; i < 8; i++) {
-            res = Math.max(res, fvalues[i][n]);
+            res = Math.max(res, fvalues[i][n - 1]);
         }
         return res;
     }
